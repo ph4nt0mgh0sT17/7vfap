@@ -1,13 +1,13 @@
 import {FC} from "react";
 
-export interface FooterProps {
-    heading: string;
-}
-
-const Footer: FC<FooterProps> = (props) => {
+const Footer: FC = () => {
     return (
         <div className="col">
-            <footer>{props.heading}</footer>
+            <footer className="text-center text-lg-start">
+                <div className="text-center p-3">
+                    &copy; 7VFAP
+                </div>
+            </footer>
         </div>
     )
 }
