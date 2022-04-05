@@ -1,0 +1,92 @@
+<h1>Vytvoření nového článku</h1>
+
+<ng-container *ngIf="editPostForm && !isLoading" [formGroup]="editPostForm">
+  <div class="row">
+    <div class="col">
+      <label class="btn btn-default p-0">
+        <input type="file" style="display: none" #file (change)="selectFile($event)"/>
+        <button class="btn btn-primary" (click)="file.click()">Nahrej fotku</button>
+        <span class="col" *ngIf="currentFile">
+        {{getFileKebabCaseName()}}
+      </span>
+      </label>
+      <div class="col-12 alert alert-danger" *ngIf="currentFile && fileIsTooBig() ">
+        Soubor přesahuje 2 MB. Soubor má: {{(currentFile.size / 1024 / 1024) | number:'0.2-2'}} MB
+      </div>
+      <div class="col-12 alert alert-danger" *ngIf="currentFile && fileIsNotImage()">
+        Daný soubor musí být obrázek (.jpg, .png, atd...).
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="currentFile && !fileIsNotImage()">
+    <img class="img-thumbnail mb-4" [src]="currentImageSrc" alt="xd"/>
+  </div>
+
+  <div class="row" *ngIf="currentPost && (!currentFile || fileIsNotImage())">
+    <img class="img-thumbnail mb-4" src="{{currentPost.thumbnailUrl}}" alt="xd"/>
+  </div>
+
+  <div class="row" *ngIf="uploadStarted">
+    <mat-progress-bar mode="determinate" [value]="uploadProgress">
+
+    </mat-progress-bar>
+  </div>
+
+  <div class="row mb-2">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Kategorie článku</mat-label>
+      <mat-select [formControl]="category" required>
+        <mat-option value=""> -- Zvolte kategorii -- </mat-option>
+        <mat-option *ngFor="let currentCategory of categories" value="{{currentCategory.name}}">{{currentCategory.name}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="category.hasError('required')">Prosím zvolte kategorii</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Název článku</mat-label>
+      <input matInput [formControl]="title" required placeholder="Zadejte název článku">
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Krátký popis článku</mat-label>
+      <textarea matInput
+                required
+                [formControl]="description"
+                placeholder="Vložte popis článku" maxlength="100">
+          </textarea>
+    </mat-form-field>
+  </div>
+
+  <div class="row">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Text článku</mat-label>
+      <textarea matInput
+                required
+                [formControl]="htmlContent"
+                placeholder="Vložte text článku"
+                rows="10">
+          </textarea>
+    </mat-form-field>
+  </div>
+
+
+  <div class="row mb-5">
+    <button class="btn btn-primary" [disabled]="currentFile && (fileIsTooBig() || fileIsNotImage())" (click)="save()">
+      Uložit článek
+    </button>
+  </div>
+
+  <div class="row" *ngIf="isPostCreationStarted && isPostCreated">
+    <div class="alert alert-success">Článek byl uložen úspěšně.</div>
+  </div>
+
+  <div class="row" *ngIf="isPostCreatedError">
+    <div class="alert alert-danger">Článek nemohl být uložen úspěšně.</div>
+  </div>
+</ng-container>
+<mat-spinner *ngIf="isLoading"></mat-spinner>

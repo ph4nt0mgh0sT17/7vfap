@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+  <a class="navbar-brand border-right pr-4" [routerLink]="'.'">Herní blog</a>
+
+  <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed">
+    &#9776;
+  </button>
+
+  <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+    <ul class="navbar-nav">
+      <li class="nav-item menu-item rounded mr-3" [class.active]="applicationService.activePage === 'Reviews'">
+        <a class="nav-link" [routerLink]="'reviews'" (click)="isMenuCollapsed = true">Recenze</a>
+      </li>
+      <li class="nav-item menu-item rounded mr-3" [class.active]="applicationService.activePage === 'Articles'">
+        <a class="nav-link" [routerLink]="'articles'" (click)="isMenuCollapsed = true">Články</a>
+      </li>
+      <li class="nav-item menu-item rounded mr-3" [class.active]="applicationService.activePage === 'First Feelings'">
+        <a class="nav-link" [routerLink]="'first-feelings'" (click)="isMenuCollapsed = true">První dojmy</a>
+      </li>
+    </ul>
+    <div class="d-flex flex-grow-1 justify-content-end">
+      <div ngbDropdown placement="bottom-right" display="dynamic" *ngIf="!applicationService.isUserLoggedIn()">
+        <div ngbDropdownToggle id="dropdownNotLoggedUser" class="user-icon p-3 rounded text-center">
+          <fa-icon class="cursor-pointer" [icon]="userIcon" size="2x">
+          </fa-icon>
+        </div>
+        <div ngbDropdownMenu aria-labelledby="dropdownNotLoggedUser">
+          <button ngbDropdownItem (click)="openLoginDialog()">Přihlásit se</button>
+          <button ngbDropdownItem (click)="openRegisterDialog()">Registrovat se</button>
+        </div>
+      </div>
+
+      <div ngbDropdown placement="bottom-right" display="dynamic" *ngIf="applicationService.isUserLoggedIn()">
+        <div ngbDropdownToggle id="dropdownLoggedUser" class="user-icon p-3 rounded text-center">
+          <fa-icon class="cursor-pointer" [icon]="userIcon" size="2x">
+          </fa-icon>
+          <div>{{applicationService.loggedUser.username}}</div>
+          <div>[{{getRoleText(applicationService.loggedUser.userRole)}}]</div>
+        </div>
+        <div ngbDropdownMenu aria-labelledby="dropdownLoggedUser">
+          <button ngbDropdownItem [routerLink]="'create-post'" *ngIf="isAdminLoggedIn()">Vytvořit nový článek</button>
+          <button ngbDropdownItem *ngIf="isAdminLoggedIn()" (click)="openCategoryDialog();">Vytvořit novou kategorii</button>
+          <button ngbDropdownItem (click)="logout()">Odhlásit se</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>

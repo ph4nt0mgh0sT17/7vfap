@@ -1,0 +1,105 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
+.article {
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin: 15px 0;
+  border-radius: 6px;
+}
+
+.quote {
+  padding: 15px;
+  font-size: 1.75em;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+p.paragraph {
+  text-align: justify;
+  font-size: 1.5em;
+}
+
+.reaction:hover {
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.comment {
+  padding: 15px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  margin-top: 30px;
+  border-radius: 6px;
+  background-color: #123C69;
+  color: whitesmoke;
+}
+
+.comment-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.like-reaction-active {
+  color: #05386B;
+}
+
+.dislike-reaction-active {
+  color: #FC4445;
+}
+
+.comment-child {
+  margin-left: 4rem;
+  margin-top: 15px;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.user-icon {
+  &:hover {
+    cursor: pointer;
+    color: whitesmoke;
+    background-color: #F13C20;
+  }
+}
+
+.comment-text {
+  margin-left: 10px;
+}
+
+.menu-item {
+  &.active {
+    color: whitesmoke;
+    background-color: #F13C20;
+
+    >a.nav-link {
+      color:whitesmoke !important;
+    }
+  }
+
+  &:hover {
+    cursor: pointer;
+    color: whitesmoke;
+    background-color: #F13C20;
+  }
+}
+
+.comment-divider {
+  background-color: whitesmoke;
+}
+
+.login-link {
+  cursor:pointer;
+  color:blue;
+  text-decoration:underline;
+}
+
+.post-content {
+  text-align: justify !important;
+  white-space: pre-line;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

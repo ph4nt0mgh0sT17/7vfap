@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Formulář vytvoření kategorie</h1>
+<div mat-dialog-content *ngIf="categoryForm != undefined" [formGroup]="categoryForm">
+  <div class="row justify-content-center">
+    <mat-form-field appearance="outline">
+      <mat-label>Jméno kategorie</mat-label>
+      <input [formControl]="name"  matInput required placeholder="Zadejte své přihlašovací jméno">
+      <mat-error *ngIf="name.hasError('minlength')">
+        Jméno kategorie nemůže být prázdné.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row justify-content-center">
+    <mat-form-field appearance="outline">
+      <mat-label>Popis kategorie</mat-label>
+      <input [formControl]="description" matInput required placeholder="Zadejte své heslo">
+      <mat-error *ngIf="description.hasError('minlength')">
+        Popis kategorie nemůže být prázdný
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button class="btn btn-primary" mat-button [disabled]="categoryForm.invalid" (click)="create()">Vytvořit</button>
+  <button class="btn btn-danger" mat-button mat-dialog-close="lol">Zrušit</button>
+</div>

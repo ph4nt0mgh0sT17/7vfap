@@ -1,0 +1,100 @@
+<div class="spinner-border" role="status" *ngIf="isLoading">
+  <span class="sr-only">Loading...</span>
+</div>
+<ng-container *ngIf="!isLoading && reviews">
+  <ng-container *ngIf="reviews.length === 0">
+    <div class="alert alert-info">
+      Nejsou k dispozici žádné recenze.
+    </div>
+  </ng-container>
+  <ng-container *ngIf="reviews.length !== 0">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <img src="{{reviews[0].thumbnailUrl}}" class="card-img-top" alt="Image is missing">
+          <div class="card-body">
+            <h5 class="card-title">{{reviews[0]?.title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="reviews[0].description != null">
+                {{reviews[0].description}}
+              </ng-container>
+            </p>
+            <a [routerLink]="['/posts', reviews[0].id]" class="btn btn-primary">Zobrazit recenzi</a>
+            <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', reviews[0].id]" class="btn btn-success ml-2">Upravit
+              recenzi</a>
+            <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(reviews[0].id)">Smazat
+              recenzi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let review of reviews | slice:1; let i = index">
+      <div class="card-deck mb-5 mt-5" *ngIf="i % 3 === 0">
+        <div class="card" *ngIf="i + 1 < reviews.length">
+          <img src="{{reviews[i+1].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{reviews[i + 1].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="reviews[i+1].description != null">
+                {{reviews[i + 1].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', reviews[i+1].id]" class="btn btn-primary">Zobrazit recenzi</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', reviews[i+1].id]" class="btn btn-success ml-2">Upravit
+                recenzi</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(reviews[i+1].id)">Smazat
+                recenzi
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="i + 2 < reviews.length">
+          <img src="{{reviews[i+2].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{reviews[i + 2].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="reviews[i+2].description != null">
+                {{reviews[i + 2].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', reviews[i+2].id]" class="btn btn-primary">Zobrazit recenzi</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', reviews[i+2].id]" class="btn btn-success ml-2">Upravit
+                recenzi</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(reviews[i+2].id)">Smazat
+                recenzi
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="i + 3 < reviews.length">
+          <img src="{{reviews[i+3].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{reviews[i + 3].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="reviews[i+3].description != null">
+                {{reviews[i + 3].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', reviews[i+3].id]" class="btn btn-primary">Zobrazit recenzi</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', reviews[i+3].id]" class="btn btn-success ml-2">Upravit
+                recenzi</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(reviews[i+3].id)">Smazat
+                recenzi
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary mb-4 mt-4 w-100" (click)="loadMoreReviews()">
+        Další recenze
+      </button>
+    </div>
+  </ng-container>
+</ng-container>
+

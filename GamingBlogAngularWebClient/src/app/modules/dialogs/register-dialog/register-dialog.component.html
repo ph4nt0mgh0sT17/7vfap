@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Registrace</h1>
+<div mat-dialog-content *ngIf="registerForm != undefined" [formGroup]="registerForm">
+  <div class="row justify-content-center">
+    <mat-form-field appearance="outline">
+      <mat-label>Přihlašovací jméno</mat-label>
+      <input [value]="username.value" formControlName="username" matInput required placeholder="Zadejte své přihlašovací jméno">
+      <mat-error *ngIf="username.hasError('minlength')">
+        Přihlašovací jméno nemůže být prázdné.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="row justify-content-center">
+    <mat-form-field appearance="outline">
+      <mat-label>Heslo</mat-label>
+      <input [value]="password.value" formControlName="password" matInput required placeholder="Zadejte své heslo">
+      <mat-error *ngIf="password.hasError('minlength')">
+        Heslo musí mít nejméně 4 znaky.
+      </mat-error>
+    </mat-form-field>
+  </div>
+</div>
+
+<div mat-dialog-actions>
+  <button class="btn btn-primary" mat-button (click)="register()">Registrovat</button>
+  <button class="btn btn-danger" mat-button mat-dialog-close="lol">Zrušit</button>
+</div>

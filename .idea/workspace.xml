@@ -23,6 +23,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/GamingBlogAngularWebClient" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -35,6 +36,7 @@
       <option name="presentableId" value="Default" />
       <updated>1649195947293</updated>
       <workItem from="1649195949079" duration="9000" />
+      <workItem from="1649196605113" duration="23000" />
     </task>
     <servers />
   </component>

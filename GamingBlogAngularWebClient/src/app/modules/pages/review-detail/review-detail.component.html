@@ -1,0 +1,78 @@
+<div class="spinner-border" role="status" *ngIf="isLoading">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<div class="alert alert-primary" *ngIf="!isLoading && currentPost == undefined">
+  Hledaný článek nemůže být nalezen. Prosím zkuste jiný článek.
+</div>
+
+<ng-container *ngIf="!isLoading && currentPost != undefined">
+  <div class="article">
+    <h1>{{currentPost.title}}</h1>
+    <img class="img-thumbnail mb-4" [src]="currentPost.thumbnailUrl" alt="Není">
+
+    <div class="container post-content" [innerHTML]="currentPost.htmlContent">
+
+    </div>
+
+    <h2>Reakce:</h2>
+    <div class="d-flex flex-row ml-4">
+      <div class="border border-1 rounded p-2 reaction" [class.like-reaction-active]="isLikeActive()"
+           (click)="savePostReaction(PostReactionItem.LIKE)">
+        <fa-icon [icon]="thumbsUpIcon" size="2x"></fa-icon>
+        <span class="ml-2" style="font-size: 1.5em;">{{getLikesNumber()}}</span>
+      </div>
+
+      <div class="ml-3 border border-1 rounded p-2 reaction" [class.dislike-reaction-active]="isDislikeActive()"
+           (click)="savePostReaction(PostReactionItem.DISLIKE)">
+        <fa-icon [icon]="thumbsDownIcon" size="2x"></fa-icon>
+        <span class="ml-2" style="font-size: 1.5em;">{{getDislikesNumber()}}</span>
+      </div>
+    </div>
+
+    <h2>Komentáře</h2>
+    <div class="container">
+      <div class="alert alert-primary" *ngIf="!applicationService.isUserLoggedIn()">
+        Nejste přihlášeni. Nemůžete přidat komentář. <span class="login-link"
+                                                           (click)="openLoginDialog()">Přihlásit se</span>
+      </div>
+
+      <div class="comment-input border p-3" *ngIf="commentForm != undefined && applicationService.isUserLoggedIn()" [formGroup]="commentForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Komentář</mat-label>
+          <textarea [value]="comment.value" formControlName="comment"
+                    matInput
+                    required
+                    placeholder="Vložte komentář">
+          </textarea>
+          <mat-error *ngIf="comment.invalid">
+            Komentář nemůže být prázdný.
+          </mat-error>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" [disabled]="commentForm.invalid" (click)="saveComment()">
+          Vložit komentář
+        </button>
+      </div>
+
+      <ng-container *ngIf="!isCommentSectionLoading">
+        <div class="comment" *ngFor="let currentPostComment of currentPostComments" [@simpleFadeAnimation]="'in'">
+          <h3>
+            {{ currentPostComment.author.username }}
+          </h3>
+          <h5>{{ getCommentDateText(currentPostComment) }}</h5>
+          <hr class="comment-divider"/>
+          <p class="comment-text">{{currentPostComment.text}}</p>
+          <button mat-raised-button color="warn"
+                  (click)="deleteComment(currentPostComment)"
+                  *ngIf="applicationService.isUserLoggedIn() && currentPostComment.author.username === applicationService.loggedUser.username">Smazat</button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="isCommentSectionLoading">
+        <div class="spinner-border" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</ng-container>

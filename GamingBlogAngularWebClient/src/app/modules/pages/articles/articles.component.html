@@ -1,0 +1,100 @@
+<div class="spinner-border" role="status" *ngIf="isLoading">
+  <span class="sr-only">Loading...</span>
+</div>
+<ng-container *ngIf="!isLoading && articles">
+  <ng-container *ngIf="articles.length === 0">
+    <div class="alert alert-info">
+      Nejsou k dispozici žádné články.
+    </div>
+  </ng-container>
+  <ng-container *ngIf="articles.length !== 0">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <img src="{{articles[0].thumbnailUrl}}" class="card-img-top" alt="Image is missing">
+          <div class="card-body">
+            <h5 class="card-title">{{articles[0]?.title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="articles[0].description != null">
+                {{articles[0].description}}
+              </ng-container>
+            </p>
+            <a [routerLink]="['/posts', articles[0].id]" class="btn btn-primary">Zobrazit článek</a>
+            <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', articles[0].id]" class="btn btn-success ml-2">Upravit
+              článek</a>
+            <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(articles[0].id)">Smazat
+              článek
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let article of articles | slice:1; let i = index">
+      <div class="card-deck mb-5 mt-5" *ngIf="i % 3 === 0">
+        <div class="card" *ngIf="i + 1 < articles.length">
+          <img src="{{articles[i+1].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{articles[i + 1].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="articles[i+1].description != null">
+                {{articles[i + 1].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', articles[i+1].id]" class="btn btn-primary">Zobrazit článek</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', articles[i+1].id]" class="btn btn-success ml-2">Upravit
+                článek</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(articles[i+1].id)">Smazat
+                článek
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="i + 2 < articles.length">
+          <img src="{{articles[i+2].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{articles[i + 2].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="articles[i+2].description != null">
+                {{articles[i + 2].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', articles[i+2].id]" class="btn btn-primary">Zobrazit článek</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', articles[i+2].id]" class="btn btn-success ml-2">Upravit
+                článek</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(articles[i+2].id)">Smazat
+                článek
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="i + 3 < articles.length">
+          <img src="{{articles[i+3].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{articles[i + 3].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="articles[i+3].description != null">
+                {{articles[i + 3].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', articles[i+3].id]" class="btn btn-primary">Zobrazit článek</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', articles[i+3].id]" class="btn btn-success ml-2">Upravit
+                článek</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(articles[i+3].id)">Smazat
+                článek
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary mb-4 mt-4 w-100" (click)="loadMoreArticles()">
+        Další články
+      </button>
+    </div>
+  </ng-container>
+</ng-container>
+

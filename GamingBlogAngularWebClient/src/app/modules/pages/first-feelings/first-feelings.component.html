@@ -1,0 +1,100 @@
+<div class="spinner-border" role="status" *ngIf="isLoading">
+  <span class="sr-only">Loading...</span>
+</div>
+<ng-container *ngIf="!isLoading && firstFeelings">
+  <ng-container *ngIf="firstFeelings.length === 0">
+    <div class="alert alert-info">
+      Nejsou k dispozici žádné první dojmy.
+    </div>
+  </ng-container>
+  <ng-container *ngIf="firstFeelings.length !== 0">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <img src="{{firstFeelings[0].thumbnailUrl}}" class="card-img-top" alt="Image is missing">
+          <div class="card-body">
+            <h5 class="card-title">{{firstFeelings[0]?.title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="firstFeelings[0].description != null">
+                {{firstFeelings[0].description}}
+              </ng-container>
+            </p>
+            <a [routerLink]="['/posts', firstFeelings[0].id]" class="btn btn-primary">Zobrazit článek</a>
+            <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', firstFeelings[0].id]" class="btn btn-success ml-2">Upravit
+              článek</a>
+            <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(firstFeelings[0].id)">Smazat
+              článek
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let reviews of firstFeelings | slice:1; let i = index">
+      <div class="card-deck mb-5 mt-5" *ngIf="i % 3 === 0">
+        <div class="card" *ngIf="i + 1 < firstFeelings.length">
+          <img src="{{firstFeelings[i+1].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{firstFeelings[i + 1].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="firstFeelings[i+1].description != null">
+                {{firstFeelings[i + 1].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', firstFeelings[i+1].id]" class="btn btn-primary">Zobrazit článek</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', firstFeelings[i+1].id]" class="btn btn-success ml-2">Upravit
+                článek</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(firstFeelings[i+1].id)">Smazat
+                článek
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="i + 2 < firstFeelings.length">
+          <img src="{{firstFeelings[i+2].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{firstFeelings[i + 2].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="firstFeelings[i+2].description != null">
+                {{firstFeelings[i + 2].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', firstFeelings[i+2].id]" class="btn btn-primary">Zobrazit článek</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', firstFeelings[i+2].id]" class="btn btn-success ml-2">Upravit
+                článek</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(firstFeelings[i+2].id)">Smazat
+                článek
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="card" *ngIf="i + 3 < firstFeelings.length">
+          <img src="{{firstFeelings[i+3].thumbnailUrl}}" class="card-img-top" alt="...">
+          <div class="card-body" style="display: flex !important; flex-direction: column !important;">
+            <h5 class="card-title">{{firstFeelings[i + 3].title}}</h5>
+            <p class="card-text">
+              <ng-container *ngIf="firstFeelings[i+3].description != null">
+                {{firstFeelings[i + 3].description}}
+              </ng-container>
+            </p>
+            <div class="d-flex align-items-end flex-grow-1">
+              <a [routerLink]="['/posts', firstFeelings[i+3].id]" class="btn btn-primary">Zobrazit článek</a>
+              <a *ngIf="isUserAdmin()" [routerLink]="['/edit-post', firstFeelings[i+3].id]" class="btn btn-success ml-2">Upravit
+                článek</a>
+              <button *ngIf="isUserAdmin()" class="btn btn-danger ml-2" (click)="deletePost(firstFeelings[i+3].id)">Smazat
+                článek
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary mb-4 mt-4 w-100" (click)="loadMoreFirstFeelings()">
+        Další první dojmy
+      </button>
+    </div>
+  </ng-container>
+</ng-container>
+
