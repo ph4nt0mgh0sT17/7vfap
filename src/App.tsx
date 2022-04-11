@@ -3,13 +3,18 @@ import {NavigationBar} from "./components/NavigationBar";
 import "bootstrap/dist/css/bootstrap.min.css"
 import {Header} from "./components/Header";
 import {FooterPage} from "./components/FooterPage";
+import {LayoutRouter} from "./components/LayoutRouter";
 
 interface AppState {
 
 }
 
-class App extends Component<any, AppState> {
-    constructor(props: any) {
+interface AppProps {
+
+}
+
+class App extends Component<AppProps, AppState> {
+    constructor(props: AppProps) {
         super(props);
 
         this.state = {};
@@ -19,8 +24,9 @@ class App extends Component<any, AppState> {
         return (
             <React.Fragment>
                 <NavigationBar/>
-                <Header />
-                <FooterPage />
+                <Header/>
+                <LayoutRouter/>
+                <FooterPage/>
             </React.Fragment>
         );
     }
