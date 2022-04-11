@@ -2,13 +2,17 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
+import {FormsModule} from "@angular/forms";
+import { TitleHistoryComponent } from './title-history/title-history.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TitleHistoryComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
