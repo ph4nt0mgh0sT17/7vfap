@@ -3,8 +3,8 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import {PostService} from "../services/PostService";
 import {LoadingSpinner} from "./LoadingSpinner";
 import {PostResponse} from "../Responses/PostResponse";
-import {Alert, Button} from "react-bootstrap";
 import {PostCard} from "./PostCard";
+import {Alert, Button} from "@mui/material";
 
 export const Reviews: FC = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,7 +24,7 @@ export const Reviews: FC = () => {
             <LoadingSpinner title={'Načítám recenze ...'} isLoading={isLoading}/>
 
             {reviewPosts.length === 0 &&
-                <Alert variant={"info"}>
+                <Alert severity={"info"}>
                     Nejsou k dispozici žádné recenze.
                 </Alert>
             }
@@ -65,7 +65,7 @@ export const Reviews: FC = () => {
                     }
 
                     <div className="row mt-5">
-                        <Button variant="primary">
+                        <Button variant="contained">
                             Načíst další recenze
                         </Button>
                     </div>

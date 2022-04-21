@@ -2,8 +2,8 @@ import React, {FC, useEffect, useState} from "react";
 import {PostResponse} from "../Responses/PostResponse";
 import {PostService} from "../services/PostService";
 import {LoadingSpinner} from "./LoadingSpinner";
-import {Alert, Button} from "react-bootstrap";
 import {PostCard} from "./PostCard";
+import {Alert, Button} from "@mui/material";
 
 export const FirstFeelings: FC = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +23,7 @@ export const FirstFeelings: FC = () => {
             <LoadingSpinner title={'Načítám první dojmy ...'} isLoading={isLoading}/>
 
             {firstFeelingsPosts.length === 0 &&
-                <Alert variant={"info"}>
+                <Alert severity={"info"}>
                     Nejsou k dispozici žádné první dojmy.
                 </Alert>
             }
@@ -64,7 +64,7 @@ export const FirstFeelings: FC = () => {
                     }
 
                     <div className="row mt-5">
-                        <Button variant="primary">
+                        <Button variant="contained">
                             Načíst další první dojmy
                         </Button>
                     </div>

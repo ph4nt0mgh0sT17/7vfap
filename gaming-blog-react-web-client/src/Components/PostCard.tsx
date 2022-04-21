@@ -1,5 +1,7 @@
 import {PostResponse} from "../Responses/PostResponse";
 import React, {FC} from "react";
+import {Button} from "@mui/material";
+import {Link} from "react-router-dom";
 
 export interface PostCardProps {
     post: PostResponse;
@@ -17,10 +19,12 @@ export const PostCard: FC<PostCardProps> = (props) => {
                     {props.post.description}
                 </p>
             }
+            <Link to={"/posts/" + props.post.id}>
+                <Button variant="contained">
+                    Zobrazit
+                </Button>
+            </Link>
 
-            <a href={"/posts/" + props.post.id}
-               className="btn btn-primary">Zobrazit
-                recenzi</a>
         </div>
     </div>;
 }
