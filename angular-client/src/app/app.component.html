@@ -1,11 +1,11 @@
 <div class="container" role="main">
   <h1>{{title}} is running!</h1>
   <div class="form-group">
-    <label for="titleInput">Title</label>
+    <label appHighlight for="titleInput">Title</label>
     <input type="text" class="form-control" id="titleInput" placeholder="Title" [(ngModel)]="title"/>
     <button class="btn btn-success mt-3 mb-3" (click)="addTitleToHistory()">Add title to history</button>
   </div>
 
-  <app-title-history></app-title-history>
+  <app-title-history [addTitleEventEmitter]="addTitleEventEmitter"></app-title-history>
 </div>
 
