@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-xs-10">
+    <app-shopping-edit [onAddIngredient]="addIngredientToList"></app-shopping-edit>
+    <hr>
+    <ul class="list-group" *ngIf="ingredients && ingredients.length > 0">
+      <a
+        class="list-group-item"
+        style="cursor: pointer"
+        *ngFor="let ingredient of ingredients" (click)="deleteIngredient(ingredient)">
+        {{ ingredient.name }} ({{ ingredient.amount }})
+      </a>
+    </ul>
+
+    <div class="alert alert-primary" *ngIf="!ingredients || ingredients.length === 0">
+      No ingredients are present.
+    </div>
+  </div>
+</div>

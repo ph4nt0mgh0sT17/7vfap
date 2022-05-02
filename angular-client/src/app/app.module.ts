@@ -5,12 +5,16 @@ import { AppComponent } from './app.component';
 import {FormsModule} from "@angular/forms";
 import { TitleHistoryComponent } from './title-history/title-history.component';
 import { HighlightDirective } from './highlight.directive';
+import {ShoppingListComponent} from "./shopping-list/shopping-list.component";
+import {ShoppingEditComponent} from "./shopping-list/shopping-edit/shopping-edit.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     TitleHistoryComponent,
-    HighlightDirective
+    HighlightDirective,
+    ShoppingListComponent,
+    ShoppingEditComponent
   ],
   imports: [
     BrowserModule,
