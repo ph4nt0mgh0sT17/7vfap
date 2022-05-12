@@ -9,10 +9,12 @@ import {bindActionCreators} from "redux";
 import { actionCreators } from "../state";
 import {LoginResponse} from "../Models/Responses/LoginResponse";
 import {UserRole} from "../Models/UserRole";
+import {RegistrationDialog} from "./Dialogs/RegistrationDialog";
 
 export const NavigationBar: FC = () => {
 
     const [loginDialogOpened, setLoginDialogOpened] = useState(false);
+    const [registrationDialogOpened, setRegistrationDialogOpened] = useState(false);
 
     const state: LoginResponse | null = useSelector((state: RootState) => state.application);
     const dispatch = useDispatch();
@@ -36,7 +38,7 @@ export const NavigationBar: FC = () => {
     }
 
     const openRegistrationDialog = () => {
-        alert('Opened registration dialog.');
+        setRegistrationDialogOpened(true);
     }
 
     return (
@@ -71,6 +73,10 @@ export const NavigationBar: FC = () => {
             <LoginDialog open={loginDialogOpened} onClose={() => {
                 setLoginDialogOpened(false);
             }}/>
+
+            <RegistrationDialog open={registrationDialogOpened} onClose={() => {
+                setRegistrationDialogOpened(false);
+            }} />
         </React.Fragment>
     );
 };

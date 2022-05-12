@@ -1,14 +1,14 @@
 import React, {FC, useState} from "react";
-import {Button, Container, Dialog, DialogTitle, TextField} from "@mui/material";
-import {PostService} from "../../services/PostService";
 import {AuthenticationService} from "../../services/AuthenticationService";
-import {LoginRequest} from "../../Models/Requests/LoginRequest";
-import Swal from 'sweetalert2';
-import {bindActionCreators} from "redux";
-import { actionCreators } from "../../state";
 import {useDispatch} from "react-redux";
+import {bindActionCreators} from "redux";
+import {LoginRequest} from "../../Models/Requests/LoginRequest";
+import Swal from "sweetalert2";
+import {Button, Container, Dialog, DialogTitle, TextField} from "@mui/material";
+import { actionCreators } from "../../state";
+import {RegistrationRequest} from "../../Models/Requests/RegistrationRequest";
 
-export interface LoginDialogProps {
+export interface RegistrationDialogProps {
     open: boolean;
     onClose: () => void;
 }
@@ -18,7 +18,7 @@ export type ValidationError = {
     errorText: string;
 };
 
-export const LoginDialog: FC<LoginDialogProps> = (props) => {
+export const RegistrationDialog: FC<RegistrationDialogProps> = (props) => {
     const [validationErrors, setValidationErrors] = useState<ValidationError[]>([]);
 
     const [username, setUsername] = useState('');
@@ -64,28 +64,26 @@ export const LoginDialog: FC<LoginDialogProps> = (props) => {
 
         setValidationErrors(currentValidationErrors);
 
-        const loginRequest: LoginRequest = {
+        const registrationRequest: RegistrationRequest = {
             username: username,
             password: password
         };
 
         try {
-            let loginResponse = await authenticationService.login(loginRequest);
+            await authenticationService.register(registrationRequest);
 
             await Swal.fire({
-                titleText: 'Přihlášení proběhlo úspěšně.',
+                titleText: 'Registrace proběhla úspěšně.',
                 icon: 'success',
                 confirmButtonText: 'Zavřít'
             });
-
-            login(loginResponse.data);
 
             props.onClose();
         } catch (err: any) {
             if (err.response) {
                 if (err.response.status === 400 || err.response.status === 404) {
                     await Swal.fire({
-                        titleText: 'Uživatelské údaje jsou nesprávné.',
+                        titleText: 'Uživatel \'' + registrationRequest.username + '\' nemohl být zaregistrován.',
                         icon: 'error',
                         confirmButtonText: 'Zavřít'
                     });
@@ -97,7 +95,7 @@ export const LoginDialog: FC<LoginDialogProps> = (props) => {
     return (
         <Dialog onClose={props.onClose} open={props.open}>
             <Container>
-                <DialogTitle>Přihlašovací dialogové okno</DialogTitle>
+                <DialogTitle>Registrovací dialogové okno</DialogTitle>
 
                 <div className="row mb-3">
                     <TextField required id="outlined-required"
@@ -122,7 +120,7 @@ export const LoginDialog: FC<LoginDialogProps> = (props) => {
 
                 <div className="row mb-2">
                     <Button variant="contained" onClick={onLogin}>
-                        Přihlásit se
+                        Registrovat se
                     </Button>
                 </div>
             </Container>
