@@ -10,6 +10,7 @@ import {RegisterDialogComponent} from "../../../modules/dialogs/register-dialog/
 import {
   CreateCategoryDialogComponent
 } from "../../../modules/dialogs/create-category-dialog/create-category-dialog.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-default-layout',
@@ -21,7 +22,7 @@ export class DefaultLayoutComponent implements OnInit {
 
   isMenuCollapsed = true;
 
-  constructor(private dialog: MatDialog, public applicationService: IApplicationService) {
+  constructor(private dialog: MatDialog, public applicationService: IApplicationService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -39,10 +40,14 @@ export class DefaultLayoutComponent implements OnInit {
     });
   }
 
-  openCategoryDialog(): void {
+  public openCategoryDialog(): void {
     const dialogRef = this.dialog.open(CreateCategoryDialogComponent, {
       width: '400px',
     });
+  }
+
+  public openUserManagementPage(): void {
+    this.router.navigate(['user-management']);
   }
 
   public async logout(): Promise<void> {

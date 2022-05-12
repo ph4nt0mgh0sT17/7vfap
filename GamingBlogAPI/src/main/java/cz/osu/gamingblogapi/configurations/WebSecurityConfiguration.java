@@ -50,6 +50,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/post-comments/[0-9]+").authenticated()
                 .antMatchers(HttpMethod.POST, "/api/post-comments/[0-9]+").authenticated()
                 .antMatchers("/api/images/**").authenticated()
+                .antMatchers("/api/user-management/**").authenticated()
                 .antMatchers(_staticFileConfiguration.getResourcePath()).permitAll()
                 .anyRequest().authenticated();
     }

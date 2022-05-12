@@ -1,0 +1,128 @@
+<div class="spinner-border" role="status" *ngIf="loading">
+  <span class="sr-only">Loading...</span>
+</div>
+
+<mat-tab-group>
+  <mat-tab label="Uživatelé">
+    <ng-container *ngIf="!loading && users && users.length === 0">
+      <div class="alert alert-info">
+        Nejsou k dispozici žádní uživatelé.
+      </div>
+    </ng-container>
+
+    <table [hidden]="loading" mat-table [dataSource]="dataSourceForUsers" matSort
+           class="mat-elevation-z8 w-100">
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by username">
+          <div class="row p-5" style="flex-direction: column">
+            Přihlašovací jméno uživatele
+            <mat-form-field appearance="outline" [formGroup]="usernameGroupForUsers">
+              <mat-label>Jméno uživatele</mat-label>
+              <input formControlName="username" matInput>
+            </mat-form-field>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.username}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by first name">
+          Křestní jméno
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.firstName == null ? 'Neznámé křestní jméno' : element.firstName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last name">
+          Příjmení
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.lastName == null ? 'Neznámé příjmení' : element.lastName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by creation date">
+          <div class="row p-3" style="flex-direction: column">
+            Datum vytvoření
+            <mat-form-field appearance="fill">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [formGroup]="rangeGroupForUsers" [rangePicker]="picker">
+                <input matStartDate readonly formControlName="start" placeholder="Start date">
+                <input matEndDate readonly formControlName="end" placeholder="End date">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+
+              <mat-error *ngIf="rangeGroupForUsers.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+              <mat-error *ngIf="rangeGroupForUsers.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+            </mat-form-field>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.creationDate | date}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-tab>
+  <mat-tab label="Administrátoři">
+    <ng-container *ngIf="!loading && users && users.length === 0">
+      <div class="alert alert-info">
+        Nejsou k dispozici žádní administrátoři.
+      </div>
+    </ng-container>
+
+    <table [hidden]="loading" mat-table [dataSource]="dataSourceForAdmins" matSort
+           class="mat-elevation-z8 w-100">
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by username">
+          <div class="row p-5" style="flex-direction: column">
+            Přihlašovací jméno administrátora
+            <mat-form-field appearance="outline" [formGroup]="usernameGroupForAdmins">
+              <mat-label>Jméno administrátora</mat-label>
+              <input formControlName="username" matInput>
+            </mat-form-field>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.username}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by first name">
+          Křestní jméno
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.firstName == null ? 'Neznámé křestní jméno' : element.firstName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by last name">
+          Příjmení
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.lastName == null ? 'Neznámé příjmení' : element.lastName}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="creationDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by creation date">
+          <div class="row p-3" style="flex-direction: column">
+            Datum vytvoření
+            <mat-form-field appearance="fill">
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input [formGroup]="rangeGroupForAdmins" [rangePicker]="picker">
+                <input matStartDate readonly formControlName="start" placeholder="Start date">
+                <input matEndDate readonly formControlName="end" placeholder="End date">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element">{{element.creationDate | date}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </mat-tab>
+</mat-tab-group>
+

@@ -39,6 +39,7 @@
         <div ngbDropdownMenu aria-labelledby="dropdownLoggedUser">
           <button ngbDropdownItem [routerLink]="'create-post'" *ngIf="isAdminLoggedIn()">Vytvořit nový článek</button>
           <button ngbDropdownItem *ngIf="isAdminLoggedIn()" (click)="openCategoryDialog();">Vytvořit novou kategorii</button>
+          <button ngbDropdownItem *ngIf="isAdminLoggedIn()" (click)="openUserManagementPage();">Otevřít seznam uživatelů</button>
           <button ngbDropdownItem (click)="logout()">Odhlásit se</button>
         </div>
       </div>

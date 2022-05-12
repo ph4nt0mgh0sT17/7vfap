@@ -60,6 +60,17 @@ public class ModelMapperExtensions {
                 map().setPassword(source.getPassword());
             }
         });
+
+        modelMapper.addMappings(new PropertyMap<User, UserResponse>() {
+            @Override
+            protected void configure() {
+                map().setUsername(source.getUsername());
+                map().setFirstName(source.getFirstName());
+                map().setLastName(source.getLastName());
+                map().setRole(source.getRole());
+                map().setCreationDate(source.getCreationDate());
+            }
+        });
     }
 
     private static void addPostMappings(ModelMapper modelMapper) {

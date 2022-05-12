@@ -29,6 +29,8 @@ import {CategoryService} from "./core/services/category.service";
 import {IPostService} from "./core/services/interface-post.service";
 import {PostService} from "./core/services/post.service";
 import { CreateCategoryDialogComponent } from './modules/dialogs/create-category-dialog/create-category-dialog.component';
+import {IUserService} from "./core/services/interfaces/user.service";
+import {UserService} from "./core/services/user.service";
 
 @NgModule({
   declarations: [
@@ -79,6 +81,10 @@ import { CreateCategoryDialogComponent } from './modules/dialogs/create-category
     {
       provide: IPostService,
       useClass: PostService
+    },
+    {
+      provide: IUserService,
+      useClass: UserService
     },
 
     INTERCEPTOR_PROVIDERS

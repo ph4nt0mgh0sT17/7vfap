@@ -33,10 +33,15 @@ const routes: Routes = [
         path: 'create-post',
         loadChildren: () => import('./modules/pages/create-post/create-post.module').then(m => m.CreatePostModule),
         canActivate: [AdminAuthGuard]
+      },
+      {
+        path: 'user-management',
+        loadChildren: () => import('./modules/pages/user-management/user-management.module').then(m => m.UserManagementModule),
+        canActivate: [AdminAuthGuard]
       }
     ]
   },
-  {path: '**', pathMatch: 'full', redirectTo: 'orders/create'}
+  {path: '**', pathMatch: 'full', redirectTo: 'reviews'}
 ];
 
 @NgModule({
