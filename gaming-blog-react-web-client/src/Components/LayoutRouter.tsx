@@ -12,6 +12,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {FirstFeelings} from "./FirstFeelings";
 import {EditPost} from "./EditPost";
 import {UserManagement} from "./UserManagement";
+import {PostDetail} from "./PostDetail";
 
 export const LayoutRouter: FC = () => (
     <BrowserRouter>
@@ -22,6 +23,7 @@ export const LayoutRouter: FC = () => (
                     <Route element={<Reviews/>} path="reviews"/>
                     <Route element={<Articles/>} path="articles"/>
                     <Route element={<FirstFeelings/>} path="first-feelings"/>
+                    <Route element={<PostDetail/>} path="posts/:postId"/>
                     <Route element={<EditPost/>} path="edit-post/:postId"/>
                     <Route element={<UserManagement/>} path="user-management"/>
                     <Route path="*" element={<Navigate to={"reviews"}/>}/>

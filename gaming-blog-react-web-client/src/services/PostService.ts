@@ -17,6 +17,10 @@ export class PostService {
         return HttpClient.get<PostResponse[]>(`${this.postApiEndpointUrl}/first-feelings/latest`);
     }
 
+    async retrievePostById(postId: number): Promise<AxiosResponse<PostResponse>> {
+        return HttpClient.get<PostResponse>(`${this.postApiEndpointUrl}/${postId}`);
+    }
+
     async deletePost(postId: number): Promise<AxiosResponse<string>> {
         return HttpClient
             .delete(`${this.postApiEndpointUrl}/${postId}`, {responseType: 'text'});
