@@ -2,14 +2,18 @@ import {Action} from "../actions";
 import {ActionTypes} from "../action-types";
 import {LoginResponse} from "../../Models/Responses/LoginResponse";
 
-let initialState: LoginResponse | null = null;
+const retrieveLoggedUser = (): LoginResponse | null => {
+    let userJsonText = localStorage.getItem('user');
+    if (userJsonText != null) {
+        return JSON.parse(userJsonText) as LoginResponse | null;
+    }
 
-let userJsonText = localStorage.getItem('user');
-if (userJsonText != null) {
-    initialState = JSON.parse(userJsonText) as LoginResponse | null;
-}
+    return null;
+};
 
-const reducer = (state: LoginResponse | null = initialState, action: Action): LoginResponse | null => {
+let initialState = retrieveLoggedUser();
+
+const ApplicationReducer = (state: LoginResponse | null = initialState, action: Action): LoginResponse | null => {
     switch (action.type) {
         case ActionTypes.LOGIN:
             localStorage.setItem('user', JSON.stringify(action.payload));
@@ -22,4 +26,4 @@ const reducer = (state: LoginResponse | null = initialState, action: Action): Lo
     }
 }
 
-export default reducer;
+export default ApplicationReducer;

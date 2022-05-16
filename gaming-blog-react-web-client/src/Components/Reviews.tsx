@@ -19,6 +19,11 @@ export const Reviews: FC = () => {
         });
     }, [])
 
+    const deletePostFromList = (postId: number) => {
+        let newPostsList = reviewPosts.filter(x => x.id !== postId);
+        setReviewPosts(newPostsList);
+    }
+
     return (
         <React.Fragment>
             <LoadingSpinner title={'Načítám recenze ...'} isLoading={isLoading}/>
@@ -33,7 +38,7 @@ export const Reviews: FC = () => {
                 <React.Fragment>
                     <div className="row">
                         <div className="col">
-                            <PostCard post={reviewPosts[0]} />
+                            <PostCard post={reviewPosts[0]} onDeletePost={deletePostFromList} />
                         </div>
                     </div>
 
@@ -43,19 +48,19 @@ export const Reviews: FC = () => {
                                 <div className="row mb-5 mt-5">
                                     {(index + 1) < reviewPosts.length &&
                                         <div className="col-4 p-2">
-                                            <PostCard post={reviewPosts[index + 1]}/>
+                                            <PostCard post={reviewPosts[index + 1]} onDeletePost={deletePostFromList}/>
                                         </div>
                                     }
 
                                     {(index + 2) < reviewPosts.length &&
                                         <div className="col-4 p-2">
-                                            <PostCard post={reviewPosts[index + 2]}/>
+                                            <PostCard post={reviewPosts[index + 2]} onDeletePost={deletePostFromList}/>
                                         </div>
                                     }
 
                                     {(index + 3) < reviewPosts.length &&
                                         <div className="col-4 p-2">
-                                            <PostCard post={reviewPosts[index + 3]}/>
+                                            <PostCard post={reviewPosts[index + 3]} onDeletePost={deletePostFromList}/>
                                         </div>
                                     }
                                 </div>

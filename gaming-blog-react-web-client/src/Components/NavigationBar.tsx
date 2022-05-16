@@ -6,7 +6,7 @@ import {LoginDialog} from "./Dialogs/LoginDialog";
 import {useDispatch, useSelector} from "react-redux";
 import {RootState} from "../state/reducers";
 import {bindActionCreators} from "redux";
-import { actionCreators } from "../state";
+import {actionCreators} from "../state";
 import {LoginResponse} from "../Models/Responses/LoginResponse";
 import {UserRole} from "../Models/UserRole";
 import {RegistrationDialog} from "./Dialogs/RegistrationDialog";
@@ -16,21 +16,38 @@ export const NavigationBar: FC = () => {
     const [loginDialogOpened, setLoginDialogOpened] = useState(false);
     const [registrationDialogOpened, setRegistrationDialogOpened] = useState(false);
 
-    const state: LoginResponse | null = useSelector((state: RootState) => state.application);
+    const loggedUser: LoginResponse | null = useSelector((state: RootState) => state.application);
     const dispatch = useDispatch();
 
-    const { login, logout } = bindActionCreators(actionCreators, dispatch)
+    const {logout} = bindActionCreators(actionCreators, dispatch)
+
+    /**
+     * Gets the text of the current user role.
+     * @param userRole The user role
+     */
+    const getUserRoleText = (userRole: UserRole): string => {
+        if (userRole === null)
+            throw new Error('The supplied user role cannot be null or undefined.');
+
+        switch (userRole) {
+            case UserRole.ROLE_USER:
+                return 'Uživatel';
+            case UserRole.ROLE_ADMIN:
+                return 'Administrátor';
+            default:
+                throw new Error(`User role: ${userRole} is not expected.`);
+        }
+    };
 
     const getUserInformation = () => {
         let userRole = '';
 
-        if (state?.userRole === UserRole.ROLE_USER)
-            userRole = 'Uživatel';
+        if (loggedUser === null)
+            throw new Error('Cannot retrieve user information when the user is not logged in.');
 
-        else if (state?.userRole === UserRole.ROLE_ADMIN)
-            userRole = 'Administrátor';
+        userRole = getUserRoleText(loggedUser.userRole);
 
-        return `${state?.username} - ${userRole}`;
+        return `${loggedUser?.username} - ${userRole}`;
     }
 
     const openLoginDialog = () => {
@@ -53,13 +70,21 @@ export const NavigationBar: FC = () => {
                         <Link to="/first-feelings" className="nav-link">První dojmy</Link>
                     </Nav>
                     <Nav>
-                        {state != null &&
+                        {loggedUser != null &&
                             <NavDropdown title={getUserInformation()}>
+                                {loggedUser.userRole === UserRole.ROLE_ADMIN &&
+                                    <React.Fragment>
+                                        <NavDropdown.Item>Vytvořit nový článek</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/user-management">Otevřít seznam uživatelů</NavDropdown.Item>
+                                        <NavDropdown.Divider />
+                                    </React.Fragment>
+                                }
+
                                 <NavDropdown.Item onClick={logout}>Odhlásit se</NavDropdown.Item>
                             </NavDropdown>
                         }
 
-                        {state == null &&
+                        {loggedUser == null &&
                             <NavDropdown title="Nepřihlášený uživatel">
                                 <NavDropdown.Item onClick={openLoginDialog}>Přihlásit se</NavDropdown.Item>
                                 <NavDropdown.Item onClick={openRegistrationDialog}>Registrovat se</NavDropdown.Item>
@@ -76,7 +101,7 @@ export const NavigationBar: FC = () => {
 
             <RegistrationDialog open={registrationDialogOpened} onClose={() => {
                 setRegistrationDialogOpened(false);
-            }} />
+            }}/>
         </React.Fragment>
     );
 };

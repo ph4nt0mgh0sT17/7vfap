@@ -18,6 +18,11 @@ export const FirstFeelings: FC = () => {
         });
     }, [])
 
+    const deletePostFromList = (postId: number) => {
+        let newPostsList = firstFeelingsPosts.filter(x => x.id !== postId);
+        setFirstFeelingsPosts(newPostsList);
+    }
+
     return (
         <React.Fragment>
             <LoadingSpinner title={'Načítám první dojmy ...'} isLoading={isLoading}/>
@@ -32,7 +37,7 @@ export const FirstFeelings: FC = () => {
                 <React.Fragment>
                     <div className="row">
                         <div className="col">
-                            <PostCard post={firstFeelingsPosts[0]} />
+                            <PostCard post={firstFeelingsPosts[0]} onDeletePost={deletePostFromList} />
                         </div>
                     </div>
 
@@ -42,19 +47,19 @@ export const FirstFeelings: FC = () => {
                                 <div className="row mb-5 mt-5">
                                     {(index + 1) < firstFeelingsPosts.length &&
                                         <div className="col-4 p-2">
-                                            <PostCard post={firstFeelingsPosts[index + 1]}/>
+                                            <PostCard post={firstFeelingsPosts[index + 1]} onDeletePost={deletePostFromList}/>
                                         </div>
                                     }
 
                                     {(index + 2) < firstFeelingsPosts.length &&
                                         <div className="col-4 p-2">
-                                            <PostCard post={firstFeelingsPosts[index + 2]}/>
+                                            <PostCard post={firstFeelingsPosts[index + 2]} onDeletePost={deletePostFromList}/>
                                         </div>
                                     }
 
                                     {(index + 3) < firstFeelingsPosts.length &&
                                         <div className="col-4 p-2">
-                                            <PostCard post={firstFeelingsPosts[index + 3]}/>
+                                            <PostCard post={firstFeelingsPosts[index + 3]} onDeletePost={deletePostFromList}/>
                                         </div>
                                     }
                                 </div>
