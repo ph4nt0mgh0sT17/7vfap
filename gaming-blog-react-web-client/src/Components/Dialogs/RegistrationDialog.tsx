@@ -58,11 +58,11 @@ export const RegistrationDialog: FC<RegistrationDialogProps> = (props) => {
         validateUsername(currentValidationErrors);
         validatePassword(currentValidationErrors);
 
+        setValidationErrors(currentValidationErrors);
+
         if (currentValidationErrors.length > 0) {
             return;
         }
-
-        setValidationErrors(currentValidationErrors);
 
         const registrationRequest: RegistrationRequest = {
             username: username,

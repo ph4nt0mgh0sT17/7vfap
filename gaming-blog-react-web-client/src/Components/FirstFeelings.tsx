@@ -8,12 +8,14 @@ import {Alert, Button} from "@mui/material";
 export const FirstFeelings: FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [firstFeelingsPosts, setFirstFeelingsPosts] = useState<PostResponse[]>([]);
+    const [firstFeelingsCount, setFirstFeelingsCount] = useState(0);
 
     const _postService = new PostService();
 
     useEffect(() => {
         _postService.retrieveLatestFirstFeelings().then(posts => {
             setFirstFeelingsPosts(posts.data);
+            setFirstFeelingsCount(posts.data.length);
             setIsLoading(false);
         });
     }, [])
@@ -21,6 +23,14 @@ export const FirstFeelings: FC = () => {
     const deletePostFromList = (postId: number) => {
         let newPostsList = firstFeelingsPosts.filter(x => x.id !== postId);
         setFirstFeelingsPosts(newPostsList);
+        setFirstFeelingsCount(newPostsList.length);
+    }
+
+    const onAnotherFirstFeelingsRefresh = async () => {
+        const anotherPosts = (await _postService.retrieveAnotherLatestFirstFeelings(firstFeelingsCount)).data;
+        const newPosts = firstFeelingsPosts.concat(anotherPosts);
+        setFirstFeelingsPosts(newPosts);
+        setFirstFeelingsCount(newPosts.length);
     }
 
     return (
@@ -69,7 +79,7 @@ export const FirstFeelings: FC = () => {
                     }
 
                     <div className="row mt-5">
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={onAnotherFirstFeelingsRefresh}>
                             Načíst další první dojmy
                         </Button>
                     </div>

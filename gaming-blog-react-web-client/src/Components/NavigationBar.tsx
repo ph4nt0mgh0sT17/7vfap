@@ -74,7 +74,7 @@ export const NavigationBar: FC = () => {
                             <NavDropdown title={getUserInformation()}>
                                 {loggedUser.userRole === UserRole.ROLE_ADMIN &&
                                     <React.Fragment>
-                                        <NavDropdown.Item>Vytvořit nový článek</NavDropdown.Item>
+                                        <NavDropdown.Item as={Link} to="/create-post">Vytvořit nový článek</NavDropdown.Item>
                                         <NavDropdown.Item as={Link} to="/user-management">Otevřít seznam uživatelů</NavDropdown.Item>
                                         <NavDropdown.Divider />
                                     </React.Fragment>

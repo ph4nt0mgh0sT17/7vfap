@@ -8,12 +8,14 @@ import {Alert, Button} from "@mui/material";
 export const Articles: FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [articlePosts, setArticlePosts] = useState<PostResponse[]>([]);
+    const [articleCount, setArticleCount] = useState(0);
 
     const _postService = new PostService();
 
     useEffect(() => {
         _postService.retrieveLatestArticles().then(posts => {
             setArticlePosts(posts.data);
+            setArticleCount(posts.data.length);
             setIsLoading(false);
         });
     }, []);
@@ -21,7 +23,15 @@ export const Articles: FC = () => {
     const deletePostFromList = (postId: number) => {
         let newPostsList = articlePosts.filter(x => x.id !== postId);
         setArticlePosts(newPostsList);
+        setArticleCount(newPostsList.length);
     };
+
+    const onAnotherArticlesRefresh = async () => {
+        const anotherPosts = (await _postService.retrieveAnotherLatestArticles(articleCount)).data;
+        const newPosts = articlePosts.concat(anotherPosts);
+        setArticlePosts(newPosts);
+        setArticleCount(newPosts.length);
+    }
 
     return (
         <React.Fragment>
@@ -69,7 +79,7 @@ export const Articles: FC = () => {
                     }
 
                     <div className="row mt-5">
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={onAnotherArticlesRefresh}>
                             Načíst další články
                         </Button>
                     </div>

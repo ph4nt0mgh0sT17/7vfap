@@ -7,6 +7,7 @@ import {LoginResponse} from "../Models/Responses/LoginResponse";
 import {useSelector} from "react-redux";
 import {RootState} from "../state/reducers";
 import Swal from "sweetalert2";
+import {UserRole} from "../Models/UserRole";
 
 export interface PostCardProps {
     post: PostResponse;
@@ -55,26 +56,29 @@ export const PostCard: FC<PostCardProps> = (props) => {
                         {post.description}
                     </p>
                 }
-                <Link to={"/posts/" + post.id}>
-                    <Button variant="contained">
-                        Zobrazit
-                    </Button>
-                </Link>
 
-                {loggedUser !== null &&
-                    <Link className="ms-3" to={"/edit-post/" + post.id}>
-                        <Button variant="contained" color="success">
-                            Upravit příspěvek
+                <div className="d-flex align-items-end flex-grow-1">
+                    <Link to={"/posts/" + post.id}>
+                        <Button variant="contained">
+                            Zobrazit
                         </Button>
                     </Link>
-                }
 
-                {loggedUser !== null &&
-                    <Button className="ms-3" variant="contained" color="error"
-                            onClick={() => deletePost(post.id)}>
-                        Smazat příspěvek
-                    </Button>
-                }
+                    {loggedUser !== null && loggedUser.userRole === UserRole.ROLE_ADMIN &&
+                        <Link className="ms-3" to={"/edit-post/" + post.id}>
+                            <Button variant="contained" color="success">
+                                Upravit
+                            </Button>
+                        </Link>
+                    }
+
+                    {loggedUser !== null && loggedUser.userRole === UserRole.ROLE_ADMIN &&
+                        <Button className="ms-3" variant="contained" color="error"
+                                onClick={() => deletePost(post.id)}>
+                            Smazat
+                        </Button>
+                    }
+                </div>
 
             </div>
         </div>

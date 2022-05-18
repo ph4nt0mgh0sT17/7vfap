@@ -13,7 +13,7 @@ export interface LoginDialogProps {
     onClose: () => void;
 }
 
-export type ValidationError = {
+export interface ValidationError {
     name: string;
     errorText: string;
 };
@@ -58,11 +58,11 @@ export const LoginDialog: FC<LoginDialogProps> = (props) => {
         validateUsername(currentValidationErrors);
         validatePassword(currentValidationErrors);
 
+        setValidationErrors(currentValidationErrors);
+
         if (currentValidationErrors.length > 0) {
             return;
         }
-
-        setValidationErrors(currentValidationErrors);
 
         const loginRequest: LoginRequest = {
             username: username,

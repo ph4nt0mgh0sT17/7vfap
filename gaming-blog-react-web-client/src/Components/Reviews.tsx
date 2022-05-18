@@ -9,12 +9,14 @@ import {Alert, Button} from "@mui/material";
 export const Reviews: FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [reviewPosts, setReviewPosts] = useState<PostResponse[]>([]);
+    const [reviewCount, setReviewCount] = useState(0);
 
     const _postService = new PostService();
 
     useEffect(() => {
         _postService.retrieveLatestReviews().then(posts => {
             setReviewPosts(posts.data);
+            setReviewCount(posts.data.length);
             setIsLoading(false);
         });
     }, [])
@@ -22,6 +24,14 @@ export const Reviews: FC = () => {
     const deletePostFromList = (postId: number) => {
         let newPostsList = reviewPosts.filter(x => x.id !== postId);
         setReviewPosts(newPostsList);
+        setReviewCount(newPostsList.length);
+    }
+
+    const onAnotherReviewsRefresh = async () => {
+        const anotherPosts = (await _postService.aretrieveAnotherLatestReviews(reviewCount)).data;
+        const newPosts = reviewPosts.concat(anotherPosts);
+        setReviewPosts(newPosts);
+        setReviewCount(newPosts.length);
     }
 
     return (
@@ -70,7 +80,7 @@ export const Reviews: FC = () => {
                     }
 
                     <div className="row mt-5">
-                        <Button variant="contained">
+                        <Button variant="contained" onClick={onAnotherReviewsRefresh}>
                             Načíst další recenze
                         </Button>
                     </div>

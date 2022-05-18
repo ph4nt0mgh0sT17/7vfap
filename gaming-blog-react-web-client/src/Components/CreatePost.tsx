@@ -1,23 +1,21 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {ChangeEvent, createRef, FC, useEffect, useRef, useState} from "react";
 import {useParams} from "react-router-dom";
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 import {CategoryResponse} from "../Responses/CategoryResponse";
+import {CategoryService} from "../services/CategoryService";
+import {LoadingSpinner} from "./LoadingSpinner";
+import {ValidationError} from "./Dialogs/LoginDialog";
+import {Alert, Button, LinearProgress} from "@mui/material";
+import {CreatePostRequest} from "../Models/Requests/CreatePostRequest";
 import {LoginResponse} from "../Models/Responses/LoginResponse";
 import {useSelector} from "react-redux";
 import {RootState} from "../state/reducers";
-import {ValidationError} from "./Dialogs/LoginDialog";
-import {CategoryService} from "../services/CategoryService";
 import {PostService} from "../services/PostService";
-import {ImageService} from "../services/ImageService";
-import {CreatePostRequest} from "../Models/Requests/CreatePostRequest";
 import Swal from "sweetalert2";
-import {LoadingSpinner} from "./LoadingSpinner";
-import {Alert, Button, LinearProgress} from "@mui/material";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
+import {ImageService} from "../services/ImageService";
 
-export const EditPost: FC = () => {
-    const {postId} = useParams();
-
+export const CreatePost: FC = () => {
     const [loading, setLoading] = useState(true);
     const [postCreated, setPostCreated] = useState(false);
     const [uploadProgress, setUploadProgress] = useState(0);
@@ -42,15 +40,7 @@ export const EditPost: FC = () => {
     useEffect(() => {
         categoryService.retrieveAll().then(response => {
             setCategories(response.data);
-            postService.retrievePostById(Number(postId)).then(response => {
-                setCurrentCategory(response.data.category);
-                setPostTitle(response.data.title);
-                setPostDescription(response.data.description);
-                setPostText(response.data.htmlContent);
-                setCurrentImageSrc(response.data.thumbnailUrl);
-
-                setLoading(false);
-            })
+            setLoading(false);
         })
     }, [])
 
@@ -114,13 +104,13 @@ export const EditPost: FC = () => {
             title: postTitle,
             description: postDescription,
             htmlContent: postText,
-            imageName: getImageName(),
+            imageName: getFileKebabCaseName(),
             category: currentCategory.name,
             authorUsername: loggedUser.username
         }
 
         try {
-            await postService.editPost(createPostRequest, Number(postId));
+            await postService.createPost(createPostRequest);
             await Swal.fire({
                 titleText: 'Článek je úspěšně vytvořen.',
                 icon: 'success',
@@ -137,17 +127,6 @@ export const EditPost: FC = () => {
                 confirmButtonText: 'Zavřít'
             });
             return;
-        }
-    }
-
-    const getImageName = (): string => {
-        if (currentFile !== undefined) {
-            return getFileKebabCaseName();
-        } else {
-            // @ts-ignore
-            let lastSlashIndex = currentImageSrc.lastIndexOf('/');
-            // @ts-ignore
-            return currentImageSrc.substring(lastSlashIndex + 1);
         }
     }
 
@@ -256,7 +235,6 @@ export const EditPost: FC = () => {
                     <div className="row mb-2">
                         <TextField
                             select
-                            value={currentCategory?.name}
                             onChange={(event) => setCurrentCategory(categories.find(x => x.name === event.target.value))}
                             error={validationErrors.find(x => x.name === 'currentCategory') !== undefined}
                             helperText={validationErrors.find(x => x.name === 'currentCategory') !== undefined ? validationErrors.find(x => x.name === 'currentCategory')?.errorText : ''}
