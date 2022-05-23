@@ -20,6 +20,8 @@ import {PostCommentRequest} from "../Models/Requests/PostCommentRequest";
 
 import moment from "moment";
 import 'moment/locale/cs';
+import {PostCommentSection} from "./PostCommentSection";
+import {PostReactionSection} from "./PostReactionSection";
 
 export const PostDetail: FC = () => {
     const {postId} = useParams();
@@ -59,32 +61,6 @@ export const PostDetail: FC = () => {
             setCommentSectionIsLoading(false);
         });
     }, [])
-
-    const getLikesNumber = (): number => {
-        return postReactions.filter(x => x.reaction === PostReactionItem.LIKE).length;
-    }
-
-    const getDislikesNumber = (): number => {
-        return postReactions.filter(x => x.reaction === PostReactionItem.DISLIKE).length;
-    }
-
-    const isLikeActive = (): boolean => {
-        if (loggedUser === null)
-            return false;
-
-        return postReactions
-            .filter(x => x.reaction === PostReactionItem.LIKE)
-            .filter(x => x.authorUsername === loggedUser.username).length === 1
-    };
-
-    const isDislikeActive = (): boolean => {
-        if (loggedUser === null)
-            return false;
-
-        return postReactions
-            .filter(x => x.reaction === PostReactionItem.DISLIKE)
-            .filter(x => x.authorUsername === loggedUser.username).length === 1
-    };
 
     const handleUpdatePostReaction = async (postReactionItem: PostReactionItem) => {
         if (loggedUser === null) {
@@ -217,11 +193,6 @@ export const PostDetail: FC = () => {
         }
     }
 
-    const getCommentDateText = (postComment: PostCommentResponse) => {
-        let momentLocale = moment.locale('cs');
-        return `${moment(postComment.creationDateTime).format('DD. MMMM yyyy')} ve ${moment(postComment.creationDateTime).format('HH:mm')}`;
-    }
-
     return (
         <React.Fragment>
             <LoadingSpinner title={"Načítá se článek..."} isLoading={postIsLoading}/>
@@ -238,19 +209,8 @@ export const PostDetail: FC = () => {
                 <h2>Reakce:</h2>
                 <LoadingSpinner title={'Načítám reakce...'} isLoading={reactionsSectionIsLoading}/>
                 {!reactionsSectionIsLoading &&
-                    <div className="d-flex flex-row ml-4">
-                        <div onClick={() => handleUpdatePostReaction(PostReactionItem.LIKE)}
-                             className={`border border-1 rounded p-2 reaction ${isLikeActive() ? 'like-reaction-active' : ''}`}>
-                            <FontAwesomeIcon icon={faThumbsUp} size="2x"/>
-                            <span className="ms-2" style={{fontSize: '1.5em'}}>{getLikesNumber()}</span>
-                        </div>
-
-                        <div onClick={() => handleUpdatePostReaction(PostReactionItem.DISLIKE)}
-                             className={`ms-3 border border-1 rounded p-2 reaction ${isDislikeActive() ? 'dislike-reaction-active' : ''}`}>
-                            <FontAwesomeIcon icon={faThumbsDown} size="2x"/>
-                            <span className="ms-2" style={{fontSize: '1.5em'}}>{getDislikesNumber()}</span>
-                        </div>
-                    </div>
+                    <PostReactionSection postReactions={postReactions} isUserLoggedIn={loggedUser !== null}
+                                         loggedUsername={loggedUser?.username} handleUpdatePostReaction={handleUpdatePostReaction} />
                 }
 
                 <h2>Komentáře</h2>
@@ -279,25 +239,10 @@ export const PostDetail: FC = () => {
                 <LoadingSpinner title={'Načítají se komentáře...'} isLoading={commentSectionIsLoading}/>
 
                 {!commentSectionIsLoading &&
-                    <div className="container">
-                        {loggedUser === null &&
-                            <div className="alert alert-primary">
-                                Nejste přihlášeni. Nemůžete přidat komentář.
-                            </div>
-                        }
-
-                        {postComments.map((currentPostComment) => (
-                            <div className="comment">
-                                <h3>{currentPostComment.author.username}</h3>
-                                <h5>{getCommentDateText(currentPostComment)}</h5>
-                                <hr className="comment-divider"/>
-                                <p className="comment-text">{currentPostComment.text}</p>
-                                {loggedUser !== null && loggedUser.username === currentPostComment.author.username &&
-                                    <Button variant='contained' color='warning' onClick={() => onCommentDelete(currentPostComment.id)}>Smazat</Button>
-                                }
-                            </div>
-                        ))}
-                    </div>
+                    <PostCommentSection isUserLoggedIn={loggedUser !== null}
+                                        loggedUsername={loggedUser?.username}
+                                        postComments={postComments}
+                                        onCommentDelete={onCommentDelete} />
                 }
 
                 <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose}>
